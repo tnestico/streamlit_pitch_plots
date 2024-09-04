@@ -60,8 +60,8 @@ pitcher_id = pitcher_name_id_dict[selected_pitcher]
 
 batter_hand_picker = {
         'All': ['L', 'R'],
-        'Left': ['L'],
-        'Right': ['R']
+        'LHH': ['L'],
+        'RHH': ['R']
     }
 
 
@@ -73,7 +73,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
 
     
-    batter_hand_select = st.selectbox('',list(batter_hand_picker.keys()))
+    batter_hand_select = st.selectbox('Start Handedness:',list(batter_hand_picker.keys()))
     batter_hand = batter_hand_picker[batter_hand_select]
 with col2:
     start_date = st.date_input('Start Date:', 
@@ -108,12 +108,17 @@ df = ploter.df_to_polars(df_original=df_all,
                                  batter_hand=batter_hand)
 
 # fig = plt.figure(figsize=(16, 16), dpi=400)
-ploter.final_plot(
-                  df=df,
-                  pitcher_id=pitcher_id,
-                  plot_picker=plot_picker)
 
-
-# st.pyplot(final)
+if st.button('Generate Plot'):
+    try:
+            ploter.final_plot(
+                              df=df,
+                              pitcher_id=pitcher_id,
+                              plot_picker=plot_picker)
+    except IndexError:
+            st.write('Please select different parameters.')
+                
+            
+            # st.pyplot(final)
 
 
