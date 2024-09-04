@@ -73,7 +73,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
 
     
-    batter_hand_select = st.selectbox('Start Handedness:',list(batter_hand_picker.keys()))
+    batter_hand_select = st.selectbox('Handedness:',list(batter_hand_picker.keys()))
     batter_hand = batter_hand_picker[batter_hand_select]
 with col2:
     start_date = st.date_input('Start Date:', 
