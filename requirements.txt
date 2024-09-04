@@ -1,0 +1,10 @@
+matplotlib==3.5.1
+numpy==1.23.5
+Pillow==10.4.0
+polars==1.6.0
+Requests==2.32.3
+seaborn==0.11.1
+streamlit==1.37.1
+streamlit-aggrid
+datasets==2.21.0
+lxml
