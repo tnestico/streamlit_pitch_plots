@@ -6,11 +6,12 @@ import requests
 import polars as pl
 from datetime import date
 
+# Initialize the plotter object from PitchPlotFunctions
 ploter = ppf.PitchPlotFunctions()
 
 # URL of the file to download (raw content)
-file_url = "https://raw.githubusercontent.com/tnestico/mlb_scraper/main/api_scraper.py"
-local_file_path = "api_scraper.py"
+# file_url = "https://raw.githubusercontent.com/tnestico/mlb_scraper/main/api_scraper.py"
+# local_file_path = "api_scraper.py"
 
 # Download the file from GitHub
 response = requests.get(file_url)
@@ -20,12 +21,14 @@ if response.status_code == 200:
 else:
     print(f"Failed to download file: {response.status_code}")
 
+# Import the downloaded scraper module
 import api_scraper
 
+# Initialize the scraper object
 scraper = api_scraper.MLB_Scrape()
 
+# Get player data and filter for pitchers
 df_player = scraper.get_players(sport_id=1)
-# Assuming df_player is already defined and loaded
 df_player = df_player.filter(pl.col('position').str.contains('P'))
 df_player = df_player.with_columns(
     (pl.concat_str(["name", "player_id"], separator=" - ").alias("pitcher_name_id"))
@@ -38,6 +41,7 @@ pitcher_name_id_dict = dict(df_player.select(['pitcher_name_id', 'player_id']).i
 if 'prev_pitcher_id' not in st.session_state:
     st.session_state.prev_pitcher_id = None
 
+# Display a selectbox for pitcher selection
 st.write("#### Select Pitcher")
 selected_pitcher = st.selectbox('', list(pitcher_name_id_dict.keys()))
 pitcher_id = pitcher_name_id_dict[selected_pitcher]
@@ -53,72 +57,82 @@ if pitcher_id != st.session_state.prev_pitcher_id:
 if 'cache_cleared' not in st.session_state:
     st.session_state.cache_cleared = False
 
+# Dictionary for batter hand selection
 batter_hand_picker = {
     'All': ['L', 'R'],
     'LHH': ['L'],
     'RHH': ['R']
 }
 
+# Define date range for the season
 min_date = date(2024, 3, 20)
 max_date = date(2024, 10, 1)
 
+# Create columns for input widgets
 col1, col2, col3 = st.columns(3)
 with col1:
+    # Selectbox for batter handedness
     batter_hand_select = st.selectbox('Handedness:', list(batter_hand_picker.keys()))
     batter_hand = batter_hand_picker[batter_hand_select]
 with col2:
+    # Date input for start date
     start_date = st.date_input('Start Date:', 
                   value=min_date, 
                   min_value=min_date, 
                   max_value=max_date, 
                   format="YYYY-MM-DD")
 with col3:
+    # Date input for end date
     end_date = st.date_input('End Date:', 
                   value="default_value_today", 
                   min_value=min_date, 
                   max_value=max_date, 
                   format="YYYY-MM-DD")
 
+# Dictionary for plot type selection
 plot_picker_dict = {
     'Short Form Movement': 'short_form_movement',
     'Long Form Movement': 'long_form_movement',
     'Release Points': 'release_point'
 }
 
+# Selectbox for plot type
 plot_picker_select = st.selectbox('', list(plot_picker_dict.keys()))
 plot_picker = plot_picker_dict[plot_picker_select]
 
+# Extract season from start date
 season = str(start_date)[0:4]
 
+# Get list of games for the selected player and date range
 player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
                                              start_date=str(start_date), end_date=str(end_date))
 
+# Function to fetch data and cache it
 @st.cache_data
 def fetch_data():
     data = scraper.get_data(game_list_input=player_games)
     df = scraper.get_data_df(data_list=data)
-
     return df
 
-
-
+# Fetch data and manage cache status
 if not st.session_state.cache_cleared:
     df_original = fetch_data()
     st.session_state.cache_cleared = True
 else:
     df_original = fetch_data()
 
-
-
-
+# Button to generate plot
 if st.button('Generate Plot'):
     try:
+        # Convert dataframe to polars and filter based on inputs
         df = ploter.df_to_polars(df_original=df_original,
                              pitcher_id=pitcher_id,
                              start_date=str(start_date),
                              end_date=str(end_date),
                              batter_hand=batter_hand)
+        print(df)
 
+        # Generate the final plot
         ploter.final_plot(
             df=df,
             pitcher_id=pitcher_id,
