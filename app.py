@@ -105,13 +105,12 @@ def fetch_data():
 if not st.session_state.cache_cleared:
     df_original = fetch_data()
     st.session_state.cache_cleared = True
-    df_original2 = df_original.clone()
 else:
     df_original = fetch_data()
-    df_original2 = df_original.clone()
 
 
-df = ploter.df_to_polars(df_original=df_original2,
+
+df = ploter.df_to_polars(df_original=df_original,
                              pitcher_id=pitcher_id,
                              start_date=str(start_date),
                              end_date=str(end_date),
