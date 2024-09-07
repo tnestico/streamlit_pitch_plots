@@ -35,9 +35,22 @@ df_player = df_player.with_columns(
 pitcher_name_id_dict = dict(df_player.select(['pitcher_name_id', 'player_id']).iter_rows())
 
 
+
+# Initialize session state for previous selection
+if 'prev_pitcher_id' not in st.session_state:
+    st.session_state.prev_pitcher_id = None
+    
 st.write("#### Select Pitcher")
 selected_pitcher= st.selectbox('',list(pitcher_name_id_dict.keys()))
 pitcher_id = pitcher_name_id_dict[selected_pitcher]
+
+
+
+# Clear cache if selection changes
+if pitcher_id != st.session_state.prev_pitcher_id:
+    st.cache_data.clear()
+    st.session_state.prev_pitcher_id = pitcher_id
+    st.write('Cache cleared!')
 
 batter_hand_picker = {
         'All': ['L', 'R'],
@@ -49,6 +62,9 @@ batter_hand_picker = {
 from datetime import date
 min_date = date(2024, 3, 20)
 max_date = date(2024, 10, 1)
+
+
+
 
 st.cache_data.clear()
 col1, col2, col3 = st.columns(3)
