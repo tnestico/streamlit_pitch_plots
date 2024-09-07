@@ -120,11 +120,14 @@ def fetch_data():
                                  batter_hand=batter_hand)
 
     return df
-    
-if st.session_state.cache_cleared:
+
+
+if not st.session_state.cache_cleared:
     df = fetch_data()
     st.session_state.cache_cleared = True
 
+else:
+    df = fetch_data()
 
 if st.button('Generate Plot'):
     try:
