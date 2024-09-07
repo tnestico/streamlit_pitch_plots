@@ -224,7 +224,11 @@ class PitchPlotFunctions:
         team_abb = data_team['teams'][0]['abbreviation']
 
         # Get the logo URL from the image dictionary using the team abbreviation
-        logo_url = self.team_logos()[team_abb]
+        try:
+            logo_url = self.team_logos()[team_abb]
+
+        except KeyError:
+            logo_url = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/mlb.png?w=500&h=500&transparent=true"
 
         # Send a GET request to the logo URL
         response = requests.get(logo_url)
