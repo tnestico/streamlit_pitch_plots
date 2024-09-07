@@ -50,6 +50,7 @@ from datetime import date
 min_date = date(2024, 3, 20)
 max_date = date(2024, 10, 1)
 
+st.cache_data.clear()
 col1, col2, col3 = st.columns(3)
 with col1:
 
