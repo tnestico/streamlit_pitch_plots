@@ -81,12 +81,12 @@ plot_picker_select = st.selectbox('',list(plot_picker_dict.keys()))
 plot_picker = plot_picker_dict[plot_picker_select]
 
 season = str(start_date)[0:4]
-
-@st.cache_data
-def fetch_data():
-    player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
+player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
                                                  start_date=str(start_date), end_date=str(end_date))
     
+@st.cache_data
+def fetch_data():
+
     
     data = scraper.get_data(game_list_input=player_games)
     df = scraper.get_data_df(data_list=data)
