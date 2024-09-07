@@ -117,6 +117,8 @@ df = ploter.df_to_polars(df_original=df_original2,
                              end_date=str(end_date),
                              batter_hand=batter_hand)
 
+print(df)
+
 if st.button('Generate Plot'):
     try:
         ploter.final_plot(
