@@ -10,16 +10,16 @@ from datetime import date
 ploter = ppf.PitchPlotFunctions()
 
 # URL of the file to download (raw content)
-# file_url = "https://raw.githubusercontent.com/tnestico/mlb_scraper/main/api_scraper.py"
-# local_file_path = "api_scraper.py"
+file_url = "https://raw.githubusercontent.com/tnestico/mlb_scraper/main/api_scraper.py"
+local_file_path = "api_scraper.py"
 
-# # Download the file from GitHub
-# response = requests.get(file_url)
-# if response.status_code == 200:
-#     with open(local_file_path, 'wb') as file:
-#         file.write(response.content)
-# else:
-#     print(f"Failed to download file: {response.status_code}")
+# Download the file from GitHub
+response = requests.get(file_url)
+if response.status_code == 200:
+    with open(local_file_path, 'wb') as file:
+        file.write(response.content)
+else:
+    print(f"Failed to download file: {response.status_code}")
 
 # Import the downloaded scraper module
 import api_scraper
