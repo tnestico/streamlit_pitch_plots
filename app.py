@@ -4,7 +4,7 @@ from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 import PitchPlotFunctions as ppf
 import requests
 import polars as pl
-
+from datetime import date
 
 ploter = ppf.PitchPlotFunctions()
 
@@ -34,108 +34,87 @@ df_player = df_player.with_columns(
 # Select specific columns and convert to dictionary
 pitcher_name_id_dict = dict(df_player.select(['pitcher_name_id', 'player_id']).iter_rows())
 
-
-
 # Initialize session state for previous selection
 if 'prev_pitcher_id' not in st.session_state:
     st.session_state.prev_pitcher_id = None
-    
+
 st.write("#### Select Pitcher")
-selected_pitcher= st.selectbox('',list(pitcher_name_id_dict.keys()))
+selected_pitcher = st.selectbox('', list(pitcher_name_id_dict.keys()))
 pitcher_id = pitcher_name_id_dict[selected_pitcher]
-
-
 
 # Clear cache if selection changes
 if pitcher_id != st.session_state.prev_pitcher_id:
     st.cache_data.clear()
     st.session_state.prev_pitcher_id = pitcher_id
+    st.session_state.cache_cleared = False
     st.write('Cache cleared!')
 
 # Initialize session state for cache status
 if 'cache_cleared' not in st.session_state:
     st.session_state.cache_cleared = False
 
-
 batter_hand_picker = {
-        'All': ['L', 'R'],
-        'LHH': ['L'],
-        'RHH': ['R']
-    }
+    'All': ['L', 'R'],
+    'LHH': ['L'],
+    'RHH': ['R']
+}
 
-
-from datetime import date
 min_date = date(2024, 3, 20)
 max_date = date(2024, 10, 1)
 
-
-
-
-st.cache_data.clear()
 col1, col2, col3 = st.columns(3)
 with col1:
-
-    
-    batter_hand_select = st.selectbox('Handedness:',list(batter_hand_picker.keys()))
+    batter_hand_select = st.selectbox('Handedness:', list(batter_hand_picker.keys()))
     batter_hand = batter_hand_picker[batter_hand_select]
 with col2:
     start_date = st.date_input('Start Date:', 
-                  value= min_date, 
+                  value=min_date, 
                   min_value=min_date, 
                   max_value=max_date, 
                   format="YYYY-MM-DD")
 with col3:
     end_date = st.date_input('End Date:', 
-                  value= "default_value_today", 
+                  value="default_value_today", 
                   min_value=min_date, 
                   max_value=max_date, 
                   format="YYYY-MM-DD")
 
-
 plot_picker_dict = {
     'Short Form Movement': 'short_form_movement',
     'Long Form Movement': 'long_form_movement',
-    'Release Points' : 'release_point'
-                    
+    'Release Points': 'release_point'
 }
 
-plot_picker_select = st.selectbox('',list(plot_picker_dict.keys()))
+plot_picker_select = st.selectbox('', list(plot_picker_dict.keys()))
 plot_picker = plot_picker_dict[plot_picker_select]
 
 season = str(start_date)[0:4]
+
 player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
-                                                 start_date=str(start_date), end_date=str(end_date))
-    
+                                             start_date=str(start_date), end_date=str(end_date))
+
 @st.cache_data
 def fetch_data():
-
-    
     data = scraper.get_data(game_list_input=player_games)
     df = scraper.get_data_df(data_list=data)
-
     df = ploter.df_to_polars(df_original=df,
-                                 pitcher_id=pitcher_id,
-                                 start_date=str(start_date),
-                                 end_date=str(end_date),
-                                 batter_hand=batter_hand)
-
+                             pitcher_id=pitcher_id,
+                             start_date=str(start_date),
+                             end_date=str(end_date),
+                             batter_hand=batter_hand)
     return df
-
 
 if not st.session_state.cache_cleared:
     df = fetch_data()
     st.session_state.cache_cleared = True
-
 else:
     df = fetch_data()
 
 if st.button('Generate Plot'):
     try:
-            ploter.final_plot(
-                              df=df,
-                              pitcher_id=pitcher_id,
-                              plot_picker=plot_picker)
+        ploter.final_plot(
+            df=df,
+            pitcher_id=pitcher_id,
+            plot_picker=plot_picker)
     except IndexError:
-            st.write('Please select different parameters.')
-                
-
+        st.write('Please select different parameters.')
