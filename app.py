@@ -52,6 +52,11 @@ if pitcher_id != st.session_state.prev_pitcher_id:
     st.session_state.prev_pitcher_id = pitcher_id
     st.write('Cache cleared!')
 
+# Initialize session state for cache status
+if 'cache_cleared' not in st.session_state:
+    st.session_state.cache_cleared = False
+
+
 batter_hand_picker = {
         'All': ['L', 'R'],
         'LHH': ['L'],
@@ -116,9 +121,9 @@ def fetch_data():
 
     return df
     
-df = fetch_data()
-
-
+if not st.session_state.cache_cleared:
+    df = fetch_data()
+    st.session_state.cache_cleared = True
 
 
 if st.button('Generate Plot'):
