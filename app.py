@@ -110,16 +110,15 @@ else:
 
 
 
-df = ploter.df_to_polars(df_original=df_original,
+
+if st.button('Generate Plot'):
+    try:
+        df = ploter.df_to_polars(df_original=df_original,
                              pitcher_id=pitcher_id,
                              start_date=str(start_date),
                              end_date=str(end_date),
                              batter_hand=batter_hand)
 
-print(df)
-
-if st.button('Generate Plot'):
-    try:
         ploter.final_plot(
             df=df,
             pitcher_id=pitcher_id,
