@@ -89,6 +89,8 @@ if "load" in st.session_state:
     
     data = scraper.get_data(game_list_input=player_games)
     df = scraper.get_data_df(data_list=data)
+    st.session_state["load"] = df
+
 
 
 df = ploter.df_to_polars(df_original=df,
