@@ -89,7 +89,7 @@ if "load" not in st.session_state:
     
     data = scraper.get_data(game_list_input=player_games)
     df = scraper.get_data_df(data_list=data)
-    st.session_state["load"] = df
+    st.session_state["load"] = True
 
 
 
