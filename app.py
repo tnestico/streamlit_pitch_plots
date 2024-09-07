@@ -97,18 +97,22 @@ player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season
 def fetch_data():
     data = scraper.get_data(game_list_input=player_games)
     df = scraper.get_data_df(data_list=data)
-    df = ploter.df_to_polars(df_original=df,
+
+    return df
+
+
+
+if not st.session_state.cache_cleared:
+    df_original = fetch_data()
+    st.session_state.cache_cleared = True
+else:
+    df_original = fetch_data()
+
+df = ploter.df_to_polars(df_original=df_original,
                              pitcher_id=pitcher_id,
                              start_date=str(start_date),
                              end_date=str(end_date),
                              batter_hand=batter_hand)
-    return df
-
-if not st.session_state.cache_cleared:
-    df = fetch_data()
-    st.session_state.cache_cleared = True
-else:
-    df = fetch_data()
 
 if st.button('Generate Plot'):
     try:
