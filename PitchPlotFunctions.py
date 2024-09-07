@@ -582,7 +582,7 @@ class PitchPlotFunctions:
                      batter_hand: list):
         df = df_original.clone()
         df = df.filter((pl.col('pitcher_id') == pitcher_id) & 
-                       (pl.col('is_pitch') & (pl.col('pitch_type') != 'PO')) &
+                       (pl.col('is_pitch') & (pl.col('pitch_type') != np.nan)) &
                        (pl.col('game_date') >= start_date) &
                        (pl.col('game_date') <= end_date) &
                        (pl.col('batter_hand').is_in(batter_hand)))
