@@ -90,16 +90,18 @@ def fetch_data():
     
     data = scraper.get_data(game_list_input=player_games)
     df = scraper.get_data_df(data_list=data)
+
+    df = ploter.df_to_polars(df_original=df,
+                                 pitcher_id=pitcher_id,
+                                 start_date=str(start_date),
+                                 end_date=str(end_date),
+                                 batter_hand=batter_hand)
+
     return df
     
 df = fetch_data()
 
 
-df = ploter.df_to_polars(df_original=df,
-                                 pitcher_id=pitcher_id,
-                                 start_date=str(start_date),
-                                 end_date=str(end_date),
-                                 batter_hand=batter_hand)
 
 
 if st.button('Generate Plot'):
