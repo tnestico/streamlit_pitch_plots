@@ -131,11 +131,15 @@ if st.button('Generate Plot'):
                              end_date=str(end_date),
                              batter_hand=batter_hand)
         print(df)
-
+        if len(df) == 0:
+            st.write('Please select different parameters.')
+            
+            
+        else:
         # Generate the final plot
-        ploter.final_plot(
-            df=df,
-            pitcher_id=pitcher_id,
-            plot_picker=plot_picker)
+            ploter.final_plot(
+             df=df,
+             pitcher_id=pitcher_id,
+             plot_picker=plot_picker)
     except IndexError:
         st.write('Please select different parameters.')
