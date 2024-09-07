@@ -121,7 +121,7 @@ def fetch_data():
 
     return df
     
-if not st.session_state.cache_cleared:
+if st.session_state.cache_cleared:
     df = fetch_data()
     st.session_state.cache_cleared = True
 
