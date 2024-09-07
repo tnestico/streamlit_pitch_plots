@@ -79,7 +79,7 @@ plot_picker_dict = {
 plot_picker_select = st.selectbox('',list(plot_picker_dict.keys()))
 plot_picker = plot_picker_dict[plot_picker_select]
 
-season = start_date[0:4]
+season = str(start_date)[0:4]
 
 
 player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
