@@ -1,57 +1,37 @@
-import polars as pl
-import numpy as np
-import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 import PitchPlotFunctions as ppf
+import requests
+import polars as pl
+
 ploter = ppf.PitchPlotFunctions()
 
-pos_dict = {1 :'P',
-            2 :'C',
-            3 :'1B',
-            4 :'2B',
-            5 :'3B',
-            6 :'SS',
-            7 :'LF',
-            8 :'CF',
-            9 :'RF',
-            10 :'DH'}
+# URL of the file to download (raw content)
+file_url = "https://raw.githubusercontent.com/tnestico/mlb_scraper/main/api_scraper.py"
+local_file_path = "api_scraper.py"
 
-# Set Streamlit page configuration
-#st.set_page_config(layout="wide")
+# Download the file from GitHub
+response = requests.get(file_url)
+if response.status_code == 200:
+    with open(local_file_path, 'wb') as file:
+        file.write(response.content)
+else:
+    print(f"Failed to download file: {response.status_code}")
 
-# # Inject custom CSS to set the width of the container to 1250px
-# st.markdown(
-#     """
-#     <style>
-#     .main-container {
-#         max-width: 1250px;
-#         margin: 0 auto;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
+import api_scraper
 
+scraper = api_scraper.MLB_Scrape()
 
-
-# df_all = pl.read_csv("C:/Users/thoma/Google Drive/Python/Baseball/season_stats/2024/2024_regular_data.csv")
-from datasets import load_dataset
-dataset = load_dataset('nesticot/mlb_data', data_files=['mlb_pitch_data_2024.csv' ])
-dataset_train = dataset['train']
-df_all = dataset_train.to_polars()#.set_index(list(dataset_train.features.keys())[0]).reset_index(drop=True)
-
-
-# Assuming df_2023 is already defined and loaded
-df_all = df_all.drop('Unnamed: 0')
-# Concatenate 'pitcher_name' and 'pitcher_id' with a space
-df_all = df_all.with_columns(
-    (pl.concat_str(["pitcher_name", "pitcher_id"], separator=" - ").alias("pitcher_name_id"))
+df_player = scraper.get_players(sport_id=1)
+# Assuming df_player is already defined and loaded
+df_player = df_player.filter(pl.col('position').str.contains('P'))
+df_player = df_player.with_columns(
+    (pl.concat_str(["name", "player_id"], separator=" - ").alias("pitcher_name_id"))
 )
 
 # Select specific columns and convert to dictionary
-pitcher_name_id_dict = dict(df_all.select(['pitcher_name_id', 'pitcher_id']).iter_rows())
+pitcher_name_id_dict = dict(df_player.select(['pitcher_name_id', 'player_id']).iter_rows())
 
 
 st.write("#### Select Pitcher")
@@ -99,15 +79,23 @@ plot_picker_dict = {
 plot_picker_select = st.selectbox('',list(plot_picker_dict.keys()))
 plot_picker = plot_picker_dict[plot_picker_select]
 
+season = start_date[0:4]
 
 
-df = ploter.df_to_polars(df_original=df_all,
+player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
+                                             start_date=str(start_date), end_date=str(end_date))
+
+
+data = scraper.get_data(game_list_input=player_games)
+df = scraper.get_data_df(data_list=data)
+
+
+df = ploter.df_to_polars(df_original=df,
                                  pitcher_id=pitcher_id,
                                  start_date=str(start_date),
                                  end_date=str(end_date),
                                  batter_hand=batter_hand)
 
-# fig = plt.figure(figsize=(16, 16), dpi=400)
 
 if st.button('Generate Plot'):
     try:
@@ -118,7 +106,4 @@ if st.button('Generate Plot'):
     except IndexError:
             st.write('Please select different parameters.')
                 
-            
-            # st.pyplot(final)
-
 
