@@ -41,7 +41,7 @@ It can also display data for games currently in progress.
 
 *More information about the data and plots is shown at the bottom of this page.*
 
-*Big thanks to [Michael Rosen](https://twitter.com/bymichaelrosen) for inspiration for this project. [Check Out His App Here](https://pitchplotgenerator.streamlit.app/)
+*Big thanks to [Michael Rosen](https://twitter.com/bymichaelrosen) for inspiration for this project. [Check Out His App Here](https://pitchplotgenerator.streamlit.app/)*
 
 """
 )
