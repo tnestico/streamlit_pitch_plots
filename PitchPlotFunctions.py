@@ -214,7 +214,7 @@ class PitchPlotFunctions:
         # Turn off the axis
         ax.axis('off')
 
-    def plot_logo(self,pitcher_id: str, ax: plt.Axes):
+    def plot_logo(self,pitcher_id: str, ax: plt.Axes, team_dict: dict):
         # Construct the URL to fetch player data
         url = f"https://statsapi.mlb.com/api/v1/people?personIds={pitcher_id}&hydrate=currentTeam"
 
@@ -231,7 +231,7 @@ class PitchPlotFunctions:
         # Get the logo URL from the image dictionary using the team abbreviation
         try:
             team_id = data_team['teams'][0]['parentOrgId']
-            logo_url = self.team_logos()[dict(self.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows())[team_id]]
+            logo_url = team_dict[team_id]
 
         except KeyError:
             logo_url = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/mlb.png?w=500&h=500&transparent=true"
