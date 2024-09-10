@@ -163,6 +163,7 @@ if st.button('Generate Plot'):
                 .agg([
                     pl.col('is_pitch').drop_nans().count().alias('pitches'),
                     pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
+                    pl.col('vb').drop_nans().mean().round(1).alias('vb'),
                     pl.col('ivb').drop_nans().mean().round(1).alias('ivb'),
                     pl.col('hb').drop_nans().mean().round(1).alias('hb'),
                     pl.col('spin_rate').drop_nans().mean().round(0).alias('spin_rate'),
@@ -171,7 +172,7 @@ if st.button('Generate Plot'):
                 ])
                 .with_columns(
                     (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id') * 100).round(3).alias('proportion')
-                )).sort('proportion', descending=True).select(["pitch_description", "pitches", "start_speed","ivb","hb",
+                )).sort('proportion', descending=True).select(["pitch_description", "pitches","proportion", "start_speed","vb","ivb","hb",
                                                               "spin_rate","x0","z0"])
 
 
@@ -181,6 +182,7 @@ if st.button('Generate Plot'):
                 'pitch_description': 'Pitch Type',
                 'pitches': 'Pitches',
                 'start_speed': 'Velocity',
+                'ivb': 'VB',
                 'ivb': 'iVB',
                 'hb': 'HB',
                 'spin_rate': 'Spin Rate',
@@ -218,4 +220,30 @@ if st.button('Generate Plot'):
         st.write('Please select different parameters.')
 
 
+
+st.markdown("""
+#### Column Descriptions
+
+- **`Pitch Type`**: Describes the type of pitch thrown (e.g., 4-Seam Fastball, Curveball, Slider).
+- **`Pitches`**: The total number of pitches thrown by the pitcher.
+- **`Pitch%`**: Proportion of pitch thrown.
+- **`Velocity`**: The initial velocity of the pitch as it leaves the pitcher's hand, measured in miles per hour (mph).
+- **`VB`**: Vertical Break (VB), representing the amount movement of a pitch due to spin and gravity, measured in inches (in).
+- **`iVB`**: Induced Vertical Break (iVB), representing the amount movement of a pitch strictly due to the spin imparted on the ball, measured in inches (in).
+- **`HB`**: Horizontal Break (HB), indicating the amount of horizontal movement of a pitch, measured in inches (in).
+- **`Spin Rate`**: The rate of spin of the pitch as it is released, measured in revolutions per minute (rpm).
+- **`hRel`**: The horizontal release point of the pitch, measured in feet from the center of the pitcher's mound (ft).
+- **`vRel`**: The vertical release point of the pitch, measured in feet above the ground (ft).
+
+"""
+
+#### Plot Descriptions
+
+- **`Short Form Movement`**: Illustrates the movement of the pitch due to spin, where (0,0) indicates a pitch with perfect gyro-spin (e.g. Like a Football).
+- **`Long Form Movement`**: Illustrates the movement of the pitch due to spin and gravity.
+- **`Release Points`**: Illustrates a pitchers release points from the catcher's perspective.
+"""
+
+            
+)
 
