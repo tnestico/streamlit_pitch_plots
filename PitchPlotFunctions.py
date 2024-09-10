@@ -158,26 +158,44 @@ class PitchPlotFunctions:
     
 
     # Function to get an image from a URL and display it on the given axis
-    def player_headshot(self,pitcher_id: str, ax: plt.Axes):
+    def player_headshot(self,pitcher_id: str, ax: plt.Axes, sport_id: int):
         # Construct the URL for the player's headshot image
-        url = f'https://img.mlbstatic.com/mlb-photos/image/'\
-            f'upload/d_people:generic:headshot:67:current.png'\
-            f'/w_640,q_auto:best/v1/people/{pitcher_id}/headshot/silo/current.png'
+        if sport_id == 1:
+            url = f'https://img.mlbstatic.com/mlb-photos/image/'\
+                f'upload/d_people:generic:headshot:67:current.png'\
+                f'/w_640,q_auto:best/v1/people/{pitcher_id}/headshot/silo/current.png'
+                 # Send a GET request to the URL
+                response = requests.get(url)
+        
+                # Open the image from the response content
+                img = Image.open(BytesIO(response.content))
+        
+        
+                # Display the image on the axis
+                ax.set_xlim(0, 2)
+                ax.set_ylim(0, 1)
+                ax.imshow(img, extent=[0.0, 1, 0, 1], origin='upper')
+        
+                # Turn off the axis
+                ax.axis('off')
 
-        # Send a GET request to the URL
-        response = requests.get(url)
+        else:
+                url = f'https://img.mlbstatic.com/mlb-photos/image/upload/c_fill,g_auto/w_640/v1/people/{pitcher_id}/headshot/milb/current.png'
+                # Send a GET request to the URL
+                response = requests.get(url)
+        
+                # Open the image from the response content
+                img = Image.open(BytesIO(response.content))
+        
+        
+                # Display the image on the axis
+                ax.set_xlim(0, 2)
+                ax.set_ylim(0, 1)
+                ax.imshow(img, extent=[0.0, 180/270, 0, 1], origin='upper')
+        
+                # Turn off the axis
+                ax.axis('off')
 
-        # Open the image from the response content
-        img = Image.open(BytesIO(response.content))
-
-
-        # Display the image on the axis
-        ax.set_xlim(0, 2)
-        ax.set_ylim(0, 1)
-        ax.imshow(img, extent=[0.0, 1, 0, 1], origin='upper')
-
-        # Turn off the axis
-        ax.axis('off')
 
     def player_bio(self,pitcher_id: str, ax: plt.Axes,start_date: str,end_date: str, batter_hand: list):
         # Construct the URL to fetch player data
@@ -625,7 +643,7 @@ class PitchPlotFunctions:
         end_date = df['game_date'].max()
         batter_hand = list(df['batter_hand'].unique())
 
-        self.player_headshot(pitcher_id=pitcher_id, ax=ax_headshot)
+        self.player_headshot(pitcher_id=pitcher_id, ax=ax_headshot, sport_id=sport_id)
         self.player_bio(pitcher_id=pitcher_id, ax=ax_bio,
                         start_date=start_date,
                         end_date=end_date,
