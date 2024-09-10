@@ -53,7 +53,7 @@ sport_id_dict = {'MLB':1,
 
 col_1, col_2 = st.columns(2)
 with col_1:
-  selected_league = st.selectbox('#### Select League', list(sport_id_dict.keys()))
+  selected_league = st.selectbox('##### Select League', list(sport_id_dict.keys()))
   selected_sport_id = sport_id_dict[selected_league]
 
 with col_2:
@@ -72,7 +72,7 @@ with col_2:
       st.session_state.prev_pitcher_id = None
   
   # Display a selectbox for pitcher selection
-  selected_pitcher = st.selectbox("#### Select Pitcher",list(pitcher_name_id_dict.keys()))
+  selected_pitcher = st.selectbox("##### Select Pitcher",list(pitcher_name_id_dict.keys()))
   pitcher_id = pitcher_name_id_dict[selected_pitcher]
 
 # Clear cache if selection changes
