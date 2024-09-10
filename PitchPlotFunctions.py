@@ -174,7 +174,7 @@ class PitchPlotFunctions:
         # Display the image on the axis
         ax.set_xlim(0, 2)
         ax.set_ylim(0, 1)
-        ax.imshow(img, extent=[0.2, 1.2, 0, 1], origin='upper')
+        ax.imshow(img, extent=[0.0, 1, 0, 1], origin='upper')
 
         # Turn off the axis
         ax.axis('off')
@@ -252,7 +252,7 @@ class PitchPlotFunctions:
         # Display the image on the axis
         ax.set_xlim(0, 2)
         ax.set_ylim(0, 1)
-        ax.imshow(img, extent=[0.8, 1.8, 0, 1], origin='upper')
+        ax.imshow(img, extent=[1, 2, 0, 1], origin='upper')
 
         # Turn off the axis
         ax.axis('off')
