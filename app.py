@@ -105,7 +105,7 @@ plot_picker_dict = {
 }
 
 # Selectbox for plot type
-plot_picker_select = st.selectbox('', list(plot_picker_dict.keys()))
+plot_picker_select = st.selectbox('Select Plot Type:', list(plot_picker_dict.keys()))
 plot_picker = plot_picker_dict[plot_picker_select]
 
 # Extract season from start date
