@@ -169,7 +169,7 @@ if st.button('Generate Plot'):
                 ])
                 .with_columns(
                     (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id')).round(3).alias('proportion')
-                )).sort('proportion', descending=True)
+                )).sort('proportion', descending=True).to_pandas()
 
             st.write("#### Pitching Data")
             # Configure the AgGrid options
