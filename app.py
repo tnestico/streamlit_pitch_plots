@@ -171,6 +171,9 @@ if st.button('Generate Plot'):
                     (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id')).round(3).alias('proportion')
                 )).sort('proportion', descending=True)
 
+            grouped_df['proportion'] = grouped_df['proportion']*100
+
+
             st.write("#### Pitching Data")
 
             column_config_dict = {'pitcher_id':'Pitcher ID',
@@ -180,7 +183,7 @@ if st.button('Generate Plot'):
                                   'ivb':'iVB (in)',
                                   'hb':'HB (in)',
                                   'spin_rate':'Spin Rate (rpm)',
-                                  'proportion':st.column_config.NumberColumn("Pitch%", format="%.1%")}
+                                  'proportion':st.column_config.NumberColumn("Pitch%", format=".1%")}
                 
                 
             #st.column_config.NumberColumn("Dollar values”, format=”$ %d")}
