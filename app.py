@@ -24,6 +24,23 @@ ploter = ppf.PitchPlotFunctions()
 # Import the downloaded scraper module
 import api_scraper
 
+
+
+
+st.markdown("""
+## MLB & AAA Pitch Plots App
+
+##### By: Thomas Nestico ([@TJStats](https://x.com/TJStats))
+##### Data: [MLB](https://baseballsavant.mlb.com/)
+
+#### About
+This Streamlit app retrieves MLB and AAA Pitching Data for a selected pitcher from the MLB Stats API. 
+The app displays the pitcher's data into both a plot and table to illustrate and summarize the data.
+
+Please more infomration about the data below.
+)
+
+
 # Initialize the scraper object
 scraper = api_scraper.MLB_Scrape()
 
