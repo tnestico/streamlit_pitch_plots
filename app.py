@@ -139,7 +139,7 @@ if st.button('Generate Plot'):
                              start_date=str(start_date),
                              end_date=str(end_date),
                              batter_hand=batter_hand,
-                             sport_id=selected_sport_id)
+                             )
         print(df)
         if len(df) == 0:
             st.write('Please select different parameters.')
