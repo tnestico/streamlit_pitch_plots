@@ -157,39 +157,33 @@ if st.button('Generate Plot'):
         with st.container():
 
 
-                          # Group the data by pitch type
-              grouped_df = (
-                  df.group_by(['pitch_type'])
-                  .agg([
-                      pl.col('is_pitch').drop_nans().count().alias('pitches'),
-                      pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
-                      pl.col('ivb').drop_nans().mean().round(1).alias('ivb'),
-                      pl.col('hb').drop_nans().mean().round(1).alias('hb'),
-                      pl.col('spin_rate').drop_nans().mean().round(0).alias('spin_rate'),
-                  ])
-                  .with_columns(
-                      (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id')).round(3).alias('proportion')
-                  )).sort('proportion', descending=True)
+                        # Group the data by pitch type
+            grouped_df = (
+                df.group_by(['pitch_type'])
+                .agg([
+                    pl.col('is_pitch').drop_nans().count().alias('pitches'),
+                    pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
+                    pl.col('ivb').drop_nans().mean().round(1).alias('ivb'),
+                    pl.col('hb').drop_nans().mean().round(1).alias('hb'),
+                    pl.col('spin_rate').drop_nans().mean().round(0).alias('spin_rate'),
+                ])
+                .with_columns(
+                    (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id')).round(3).alias('proportion')
+                )).sort('proportion', descending=True)
 
-              st.write("#### Pitching Data")
-              # Configure the AgGrid options
-              gb = GridOptionsBuilder.from_dataframe(grouped_df)
-              # Set display names for columns
-              # for col, display_name in zip(column_names, column_names_display):
-              #     gb.configure_column(col, headerName=display_name)
-          
-          
-              # gb.configure_selection('single', use_checkbox=True)
-              grid_options = gb.build()
-          
-              # Display the dataframe using AgGrid
-              grid_response = AgGrid(
-                  grouped_df,
-                  gridOptions=grid_options,
-                  update_mode=GridUpdateMode.SELECTION_CHANGED,
-                  height=300,
-                  allow_unsafe_jscode=True,
-              )
+            st.write("#### Pitching Data")
+            # Configure the AgGrid options
+            gb = GridOptionsBuilder.from_dataframe(grouped_df)
+            grid_options = gb.build()
+        
+            # Display the dataframe using AgGrid
+            grid_response = AgGrid(
+                grouped_df,
+                gridOptions=grid_options,
+                update_mode=GridUpdateMode.SELECTION_CHANGED,
+                height=300,
+                allow_unsafe_jscode=True,
+            )
 
     except IndexError:
         st.write('Please select different parameters.')
