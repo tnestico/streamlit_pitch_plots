@@ -154,7 +154,7 @@ if st.button('Generate Plot'):
              sport_id = selected_sport_id)
           
           # Use a container to control the width of the AgGrid display
-          with st.container():
+        with st.container():
 
 
                           # Group the data by pitch type
