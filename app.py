@@ -95,6 +95,7 @@ min_date = date(2024, 3, 20)
 max_date = date(2024, 10, 1)
 
 # Create columns for input widgets
+st.write("##### Filters")
 col1, col2, col3 = st.columns(3)
 with col1:
     # Selectbox for batter handedness
@@ -123,6 +124,7 @@ plot_picker_dict = {
 }
 
 # Selectbox for plot type
+st.write("##### Plot")
 plot_picker_select = st.selectbox('Select Plot Type:', list(plot_picker_dict.keys()))
 plot_picker = plot_picker_dict[plot_picker_select]
 
