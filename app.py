@@ -159,7 +159,7 @@ if st.button('Generate Plot'):
 
                         # Group the data by pitch type
             grouped_df = (
-                df.group_by(['pitch_type'])
+                df.group_by(['pitcher_id','pitch_type'])
                 .agg([
                     pl.col('is_pitch').drop_nans().count().alias('pitches'),
                     pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
