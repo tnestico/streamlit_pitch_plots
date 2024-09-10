@@ -165,11 +165,14 @@ if st.button('Generate Plot'):
                     pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
                     pl.col('ivb').drop_nans().mean().round(1).alias('ivb'),
                     pl.col('hb').drop_nans().mean().round(1).alias('hb'),
-                    pl.col('spin_rate').drop_nans().mean().round(0).alias('spin_rate'),
+                    pl.col('spin_rate').drop_nans().mean().round(-1).alias('spin_rate'),
+                    pl.col('x0').drop_nans().mean().round(1).alias('x0'),
+                    pl.col('z0').drop_nans().mean().round(1).alias('z0'),
                 ])
                 .with_columns(
                     (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id') * 100).round(3).alias('proportion')
-                )).sort('proportion', descending=True)
+                )).sort('proportion', descending=True).select(["pitch_description", "pitches", "start_speed",'ivb","hb",
+                                                              "spin_rate","x0","z0"])
 
 
             st.write("#### Pitching Data")
@@ -177,16 +180,14 @@ if st.button('Generate Plot'):
                 'pitcher_id': 'Pitcher ID',
                 'pitch_description': 'Pitch Type',
                 'pitches': 'Pitches',
-                'start_speed': 'Velocity (mph)',
-                'ivb': 'iVB (in)',
-                'hb': 'HB (in)',
-                'spin_rate': 'Spin Rate (rpm)',
+                'start_speed': 'Velocity',
+                'ivb': 'iVB',
+                'hb': 'HB',
+                'spin_rate': 'Spin Rate',
                 'proportion': st.column_config.NumberColumn("Pitch%",  format="%.1f%%")
+                'x0': 'hRel',
+                'z0': 'vRel',
             }
-                
-            #st.column_config.NumberColumn("Dollar values”, format=”$ %d")}
-
-
 
             st.dataframe(grouped_df,
                          hide_index=True,
