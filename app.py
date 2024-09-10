@@ -180,7 +180,7 @@ if st.button('Generate Plot'):
                                   'ivb':'iVB (in)',
                                   'hb':'HB (in)',
                                   'spin_rate':'Spin Rate (rpm)',
-                                  'proportion':'Pitch%'}
+                                  'proportion':st.column_config.NumberColumn("Pitch%", format="%d")}
                 
                 
             #st.column_config.NumberColumn("Dollar values”, format=”$ %d")}
