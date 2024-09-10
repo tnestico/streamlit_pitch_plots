@@ -169,7 +169,7 @@ if st.button('Generate Plot'):
                 ])
                 .with_columns(
                     (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id') * 100).round(3).alias('proportion')
-                )).sort('proportion', descending=True).to_pandas()
+                )).sort('proportion', descending=True)
 
 
             st.write("#### Pitching Data")
