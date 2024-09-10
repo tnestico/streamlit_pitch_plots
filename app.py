@@ -149,6 +149,7 @@ if st.button('Generate Plot'):
             ploter.final_plot(
              df=df,
              pitcher_id=pitcher_id,
-             plot_picker=plot_picker)
+             plot_picker=plot_picker,
+             sport_id = selected_sport_id)
     except IndexError:
         st.write('Please select different parameters.')
