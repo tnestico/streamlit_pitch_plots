@@ -277,7 +277,7 @@ st.markdown("""
 
 Big thanks to [Michael Rosen](https://twitter.com/bymichaelrosen) and [Jeremy Maschino](https://twitter.com/pitchprofiler) for inspiration for this project
 
-[Check Out Michael's Pitch Plotting App Here](https://pitchplotgenerator.streamlit.app/).
+[Check Out Michael's *Pitch Plotting App*](https://pitchplotgenerator.streamlit.app/).
 
 [Check Out Jeremy's Website *Pitch Profiler*](http://www.mlbpitchprofiler.com/).
 """
