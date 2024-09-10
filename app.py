@@ -184,7 +184,7 @@ if st.button('Generate Plot'):
                 'ivb': 'iVB',
                 'hb': 'HB',
                 'spin_rate': 'Spin Rate',
-                'proportion': st.column_config.NumberColumn("Pitch%",  format="%.1f%%")
+                'proportion': st.column_config.NumberColumn("Pitch%",  format="%.1f%%"),
                 'x0': 'hRel',
                 'z0': 'vRel',
             }
