@@ -32,7 +32,7 @@ sport_id_dict = {'MLB':1,
                  'AAA':11}
 
 
-selected_league = st.selectbox('Select League', list(sport_id_dict.keys()))
+selected_league = st.selectbox('#### Select League', list(sport_id_dict.keys()))
 selected_sport_id = sport_id_dict[selected_league]
 
 # Get player data and filter for pitchers
