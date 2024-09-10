@@ -39,9 +39,9 @@ This Streamlit app retrieves MLB and AAA Pitching Data for a selected pitcher fr
 The app outputs the pitcher's data into both a plot and table to illustrate and summarize the data. 
 It can also display data for games currently in progress.
 
-*More information about the data and plots is shown at the bottom of this page.*
-
 *Big thanks to [Michael Rosen](https://twitter.com/bymichaelrosen) for inspiration for this project. [Check Out His App Here](https://pitchplotgenerator.streamlit.app/)*
+
+*More information about the data and plots is shown at the bottom of this page.*
 
 """
 )
