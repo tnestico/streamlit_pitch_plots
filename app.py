@@ -36,7 +36,7 @@ st.markdown("""
 #### About
 This Streamlit app retrieves MLB and AAA Pitching Data for a selected pitcher from the MLB Stats API and is accessed using my [MLB Stats API Scraper](https://github.com/tnestico/mlb_scraper).
 
-The app outputs the pitcher's data into both a plot and table to illustrate and summarize the data 
+The app outputs the pitcher's data into both a plot and table to illustrate and summarize the data. 
 It can also display data for games currently in progress.
 
 *More information about the data and plots is shown at the bottom of this page.*
