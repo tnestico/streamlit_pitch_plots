@@ -183,19 +183,16 @@ if st.button('Generate Plot'):
                                   'proportion':'Pitch%'
                 
                 
-                #st.column_config.NumberColumn("Dollar values”, format=”$ %d")}
+            #st.column_config.NumberColumn("Dollar values”, format=”$ %d")}
 
 
 
             st.dataframe(grouped_df,
                          hide_index=True,
                          column_config=column_config_dict
-                         
-                         
-                         
-                         
-                         
+        
                          )
+                         
             # Configure the AgGrid options
             # Configure the AgGrid options
             # gb = GridOptionsBuilder.from_dataframe(grouped_df)
