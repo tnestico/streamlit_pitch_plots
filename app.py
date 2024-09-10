@@ -192,6 +192,7 @@ if st.button('Generate Plot'):
             st.dataframe(grouped_df,
                          hide_index=True,
                          column_config=column_config_dict
+                         width = 1500
         
                          )
 
