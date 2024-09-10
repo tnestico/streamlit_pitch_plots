@@ -35,8 +35,6 @@ sport_id_dict = {'MLB':1,
 selected_league = st.selectbox('#### Select League', list(sport_id_dict.keys()))
 selected_sport_id = sport_id_dict[selected_league]
 
-team_dict =  dict(self.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows())
-
 # Get player data and filter for pitchers
 df_player = scraper.get_players(sport_id=selected_sport_id)
 df_player = df_player.filter(pl.col('position').str.contains('P'))
