@@ -73,7 +73,7 @@ with col_2:
   
   # Display a selectbox for pitcher selection
   st.write("#### Select Pitcher")
-  selected_pitcher = st.selectbox('', list(pitcher_name_id_dict.keys()))
+  selected_pitcher = st.selectbox(list(pitcher_name_id_dict.keys()))
   pitcher_id = pitcher_name_id_dict[selected_pitcher]
 
 # Clear cache if selection changes
