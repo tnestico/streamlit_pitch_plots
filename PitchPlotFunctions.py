@@ -228,17 +228,17 @@ class PitchPlotFunctions:
 
         # Send a GET request to the team URL and parse the JSON response
         data_team = requests.get(url_team).json()
-
+        print('WE MADE IT HERE',data_team['teams'][0]['parentOrgId'])
+        print(dict(scraper.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows()))
 
         # Get the logo URL from the image dictionary using the team abbreviation
-        try:
-            team_id = data_team['teams'][0]['parentOrgId']
-            print('WE MADE IT HERE',team_id)
-            print(dict(scraper.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows()))
-            logo_url = self.team_logos()[dict(scraper.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows())[team_id]]
+        # try:
+        team_id = data_team['teams'][0]['parentOrgId']
 
-        except KeyError:
-            logo_url = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/mlb.png?w=500&h=500&transparent=true"
+        logo_url = self.team_logos()[dict(scraper.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows())[team_id]]
+
+        # except KeyError:
+        #     logo_url = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/mlb.png?w=500&h=500&transparent=true"
 
         # Send a GET request to the logo URL
         response = requests.get(logo_url)
