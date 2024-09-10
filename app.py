@@ -180,7 +180,7 @@ if st.button('Generate Plot'):
                                   'ivb':'iVB (in)',
                                   'hb':'HB (in)',
                                   'spin_rate':'Spin Rate (rpm)',
-                                  'proportion':'Pitch%'
+                                  'proportion':'Pitch%'}
                 
                 
             #st.column_config.NumberColumn("Dollar values”, format=”$ %d")}
@@ -192,7 +192,7 @@ if st.button('Generate Plot'):
                          column_config=column_config_dict
         
                          )
-                         
+
             # Configure the AgGrid options
             # Configure the AgGrid options
             # gb = GridOptionsBuilder.from_dataframe(grouped_df)
