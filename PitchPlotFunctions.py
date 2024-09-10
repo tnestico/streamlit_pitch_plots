@@ -101,7 +101,14 @@ class PitchPlotFunctions:
 
         return custom_theme, colour_palette
 
+    def sport_id_dict(self):
+        dict = {1:'MLB',
+                11:'AAA'}
+        return dict
 
+        
+
+    
     def team_logos(self):
         # List of MLB teams and their corresponding ESPN logo URLs
         mlb_teams = [
@@ -186,7 +193,7 @@ class PitchPlotFunctions:
 
         # Display the player's name, handedness, age, height, and weight on the axis
         ax.text(0.5, 1, f'{player_name}', va='top', ha='center', fontsize=48)
-        ax.text(0.5, 0.6, f'{pitcher_hand}HP, Age:{age}, {height}/{weight}', va='top', ha='center', fontsize=22)
+        ax.text(0.5, 0.6, f'{pitcher_hand}HP, Age: {age}, {height}/{weight}', va='top', ha='center', fontsize=22)
         #ax.text(0.5, 0.35, f'2024 MLB Season', va='top', ha='center', fontsize=22, fontstyle='italic')
 
         if batter_hand == ['R']:
@@ -374,7 +381,7 @@ class PitchPlotFunctions:
             ax.vlines(x=0,ymin=-50,ymax=50,color=colour_palette[8],alpha=0.5,linestyles='--',zorder=1)
             ax.set_xlabel('Horizontal Break (in)', fontdict=font_properties_axes)
             ax.set_ylabel('Induced Vertical Break (in)', fontdict=font_properties_axes)
-            ax.set_title("Short Form Pitch Movement Plot",fontdict=font_properties_titles)
+            ax.set_title(f"{self.sport_id_dict()[sport_id]} - Short Form Pitch Movement Plot",fontdict=font_properties_titles)
 
 
             ax.get_legend().remove()
@@ -472,7 +479,7 @@ class PitchPlotFunctions:
             ax.axvline(x=0,color=colour_palette[8],alpha=0.5,linestyle='--',zorder=1)
             ax.set_xlabel('Horizontal Break (in)', fontdict=font_properties_axes)
             ax.set_ylabel('Vertical Break (in)', fontdict=font_properties_axes)
-            ax.set_title("Long Form Pitch Movement Plot",fontdict=font_properties_titles)
+            ax.set_title(f"{self.sport_id_dict()[sport_id]} - Long Form Pitch Movement Plot",fontdict=font_properties_titles)
 
 
             ax.get_legend().remove()
@@ -505,7 +512,7 @@ class PitchPlotFunctions:
             ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: int(x)))
 
     ### BREAK PLOT ###
-    def release_point_plot(self,df: pl.DataFrame, ax: plt.Axes):
+    def release_point_plot(self,df: pl.DataFrame, ax: plt.Axes, sport_id: int):
 
             font_properties = {'size': 20}
             font_properties_titles = {'size': 32}
@@ -543,7 +550,7 @@ class PitchPlotFunctions:
             ax.axvline(x=0,color=colour_palette[8],alpha=0.5,linestyle='--',zorder=1)
             ax.set_ylabel('Vertical Release (ft)', fontdict=font_properties_axes)
             ax.set_xlabel('Horizontal Release (ft)', fontdict=font_properties_axes)
-            ax.set_title("Release Points - Catcher Perspective",fontdict=font_properties_titles)
+            ax.set_title(f"{self.sport_id_dict()[sport_id]} - Release Points Catcher Perspective",fontdict=font_properties_titles)
 
 
             ax.get_legend().remove()
@@ -594,7 +601,7 @@ class PitchPlotFunctions:
     
 
 
-    def final_plot(self,df: pl.DataFrame,pitcher_id: str,plot_picker: str):
+    def final_plot(self,df: pl.DataFrame,pitcher_id: str,plot_picker: str, sport_id:int):
         sns.set_theme(style="whitegrid", rc=self.sns_custom_theme()[0])
         # Create a figure and a gridspec with 6 rows and 5 columns
         fig = plt.figure(figsize=(16, 16), dpi=400)
