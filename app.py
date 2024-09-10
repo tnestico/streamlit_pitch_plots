@@ -80,7 +80,7 @@ max_date = date(2024, 10, 1)
 col1, col2, col3 = st.columns(3)
 with col1:
     # Selectbox for batter handedness
-    batter_hand_select = st.selectbox('Handedness:', list(batter_hand_picker.keys()))
+    batter_hand_select = st.selectbox('Batter Handedness:', list(batter_hand_picker.keys()))
     batter_hand = batter_hand_picker[batter_hand_select]
 with col2:
     # Date input for start date
