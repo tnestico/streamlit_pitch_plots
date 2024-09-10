@@ -235,8 +235,6 @@ st.markdown("""
 - **`hRel`**: The horizontal release point of the pitch, measured in feet from the center of the pitcher's mound (ft).
 - **`vRel`**: The vertical release point of the pitch, measured in feet above the ground (ft).
 
-"""
-
 #### Plot Descriptions
 
 - **`Short Form Movement`**: Illustrates the movement of the pitch due to spin, where (0,0) indicates a pitch with perfect gyro-spin (e.g. Like a Football).
