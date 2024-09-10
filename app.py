@@ -39,8 +39,6 @@ This Streamlit app retrieves MLB and AAA Pitching Data for a selected pitcher fr
 The app outputs the pitcher's data into both a plot and table to illustrate and summarize the data. 
 It can also display data for games currently in progress.
 
-*Big thanks to [Michael Rosen](https://twitter.com/bymichaelrosen) for inspiration for this project. [Check Out His App Here](https://pitchplotgenerator.streamlit.app/)*
-
 *More information about the data and plots is shown at the bottom of this page.*
 
 """
@@ -275,6 +273,13 @@ st.markdown("""
 - **`Release Points`**: Illustrates a pitchers release points from the catcher's perspective.
 """
 
-            
+#### Acknowledgements
+
+Big thanks to [Michael Rosen](https://twitter.com/bymichaelrosen) and [Jeremy Maschino](https://twitter.com/pitchprofiler) for inspiration for this project
+
+[Check Out Michael's Pitch Plotting App Here](https://pitchplotgenerator.streamlit.app/).
+
+[Check Out Jeremy's Website *Pitch Profiler*](http://www.mlbpitchprofiler.com/).
+   
 )
 
