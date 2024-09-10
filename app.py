@@ -171,7 +171,7 @@ if st.button('Generate Plot'):
                 ])
                 .with_columns(
                     (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id') * 100).round(3).alias('proportion')
-                )).sort('proportion', descending=True).select(["pitch_description", "pitches", "start_speed",'ivb","hb",
+                )).sort('proportion', descending=True).select(["pitch_description", "pitches", "start_speed","ivb","hb",
                                                               "spin_rate","x0","z0"])
 
 
