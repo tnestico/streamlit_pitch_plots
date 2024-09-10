@@ -159,7 +159,7 @@ if st.button('Generate Plot'):
 
                         # Group the data by pitch type
             grouped_df = (
-                df.group_by(['pitcher_id','pitch_type'])
+                df.group_by(['pitcher_id','pitch_description'])
                 .agg([
                     pl.col('is_pitch').drop_nans().count().alias('pitches'),
                     pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
@@ -173,7 +173,29 @@ if st.button('Generate Plot'):
 
             st.write("#### Pitching Data")
 
-            st.dataframe(grouped_df)
+            column_config_dict = {'pitcher_id':'Pitcher ID',
+                                  'pitch_description':'Pitch Type',
+                                  'pitches':'Pitches',
+                                  'start_speed':'Velocity (mph)',
+                                  'ivb':'iVB (in)',
+                                  'hb':'HB (in)',
+                                  'spin_rate':'Spin Rate (rpm)',
+                                  'proportion':'Pitch%'
+                
+                
+                #st.column_config.NumberColumn("Dollar values”, format=”$ %d")}
+
+
+
+            st.dataframe(grouped_df,
+                         hide_index=True,
+                         column_config=column_config_dict
+                         
+                         
+                         
+                         
+                         
+                         )
             # Configure the AgGrid options
             # Configure the AgGrid options
             # gb = GridOptionsBuilder.from_dataframe(grouped_df)
