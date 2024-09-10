@@ -638,11 +638,11 @@ class PitchPlotFunctions:
 
         # Plot the pitch movement plot
         if plot_picker == 'short_form_movement':
-            self.break_plot_big(df, ax_main_plot)
+            self.break_plot_big(df, ax_main_plot,sport_id=sport_id)
         if plot_picker == 'long_form_movement':
-            self.break_plot_big_long(df, ax_main_plot)
+            self.break_plot_big_long(df, ax_main_plot,sport_id=sport_id)
         if plot_picker == 'release_point':
-            self.release_point_plot(df, ax_main_plot)
+            self.release_point_plot(df, ax_main_plot,sport_id=sport_id)
 
 
         # Sort the DataFrame and get unique pitch types
