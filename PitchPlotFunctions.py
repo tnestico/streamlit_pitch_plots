@@ -233,7 +233,7 @@ class PitchPlotFunctions:
         # Get the logo URL from the image dictionary using the team abbreviation
         try:
             team_id = data_team['teams'][0]['parentOrgId']
-            logo_url = self.team_logos(dict(scraper.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows())[team_id]])
+            logo_url = self.team_logos(dict(scraper.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows())[team_id])
 
         except KeyError:
             logo_url = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/mlb.png?w=500&h=500&transparent=true"
