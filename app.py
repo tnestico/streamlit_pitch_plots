@@ -9,17 +9,17 @@ from datetime import date
 # Initialize the plotter object from PitchPlotFunctions
 ploter = ppf.PitchPlotFunctions()
 
-# URL of the file to download (raw content)
-file_url = "https://raw.githubusercontent.com/tnestico/mlb_scraper/main/api_scraper.py"
-local_file_path = "api_scraper.py"
+# # URL of the file to download (raw content)
+# file_url = "https://raw.githubusercontent.com/tnestico/mlb_scraper/main/api_scraper.py"
+# local_file_path = "api_scraper.py"
 
-# Download the file from GitHub
-response = requests.get(file_url)
-if response.status_code == 200:
-    with open(local_file_path, 'wb') as file:
-        file.write(response.content)
-else:
-    print(f"Failed to download file: {response.status_code}")
+# # Download the file from GitHub
+# response = requests.get(file_url)
+# if response.status_code == 200:
+#     with open(local_file_path, 'wb') as file:
+#         file.write(response.content)
+# else:
+#     print(f"Failed to download file: {response.status_code}")
 
 # Import the downloaded scraper module
 import api_scraper
@@ -34,6 +34,8 @@ sport_id_dict = {'MLB':1,
 
 selected_league = st.selectbox('#### Select League', list(sport_id_dict.keys()))
 selected_sport_id = sport_id_dict[selected_league]
+
+team_dict =  dict(self.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows())
 
 # Get player data and filter for pitchers
 df_player = scraper.get_players(sport_id=selected_sport_id)
