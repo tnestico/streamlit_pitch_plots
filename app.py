@@ -169,26 +169,28 @@ if st.button('Generate Plot'):
                 ])
                 .with_columns(
                     (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id')).round(3).alias('proportion')
-                )).sort('proportion', descending=True).to_pandas()
+                )).sort('proportion', descending=True)
 
             st.write("#### Pitching Data")
+
+            st.dataframe(grouped_df)
             # Configure the AgGrid options
             # Configure the AgGrid options
-            gb = GridOptionsBuilder.from_dataframe(grouped_df)
-            # Set display names for columns
-            for col, display_name in zip(grouped_df.columns, grouped_df.columns):
-                gb.configure_column(col, headerName=display_name)
+            # gb = GridOptionsBuilder.from_dataframe(grouped_df)
+            # # Set display names for columns
+            # for col, display_name in zip(grouped_df.columns, grouped_df.columns):
+            #     gb.configure_column(col, headerName=display_name)
 
 
-            grid_options = gb.build()
+            # grid_options = gb.build()
         
-            # Display the dataframe using AgGrid
-            grid_response = AgGrid(
-                grouped_df,
-                gridOptions=grid_options,
-                height=300,
-                allow_unsafe_jscode=True,
-            )
+            # # Display the dataframe using AgGrid
+            # grid_response = AgGrid(
+            #     grouped_df,
+            #     gridOptions=grid_options,
+            #     height=300,
+            #     allow_unsafe_jscode=True,
+            # )
 
     except IndexError:
         st.write('Please select different parameters.')
