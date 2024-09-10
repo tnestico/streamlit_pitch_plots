@@ -180,14 +180,12 @@ if st.button('Generate Plot'):
                 gb.configure_column(col, headerName=display_name)
 
 
-            gb.configure_selection('single', use_checkbox=True)
             grid_options = gb.build()
         
             # Display the dataframe using AgGrid
             grid_response = AgGrid(
                 grouped_df,
                 gridOptions=grid_options,
-                update_mode=GridUpdateMode.SELECTION_CHANGED,
                 height=300,
                 allow_unsafe_jscode=True,
             )
