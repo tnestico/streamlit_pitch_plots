@@ -215,7 +215,7 @@ if st.button('Generate Plot'):
             }
 
             
-            st.markdown(f"""##### {selected_pitcher.split('-')[0]} Pitch Data
+            st.markdown(f"""##### {selected_pitcher.split('-')[0]} {selected_league} Pitch Data
             
 
             """
