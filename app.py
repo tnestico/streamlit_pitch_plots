@@ -168,10 +168,8 @@ if st.button('Generate Plot'):
                     pl.col('spin_rate').drop_nans().mean().round(0).alias('spin_rate'),
                 ])
                 .with_columns(
-                    (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id')).round(3).alias('proportion')
+                    (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id') * 100).round(3).alias('proportion')
                 )).sort('proportion', descending=True)
-
-            grouped_df['proportion'] = grouped_df['proportion']*100
 
 
             st.write("#### Pitching Data")
