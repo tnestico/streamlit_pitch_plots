@@ -182,7 +182,7 @@ if st.button('Generate Plot'):
                 'pitch_description': 'Pitch Type',
                 'pitches': 'Pitches',
                 'start_speed': 'Velocity',
-                'ivb': 'VB',
+                'vb': 'VB',
                 'ivb': 'iVB',
                 'hb': 'HB',
                 'spin_rate': 'Spin Rate',
