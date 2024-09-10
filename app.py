@@ -173,7 +173,14 @@ if st.button('Generate Plot'):
 
             st.write("#### Pitching Data")
             # Configure the AgGrid options
-            gb = GridOptionsBuilder.from_dataframe(grouped_df)
+            # Configure the AgGrid options
+            gb = GridOptionsBuilder.from_dataframe(grouped_df.columns)
+            # Set display names for columns
+            for col, display_name in zip(grouped_df.columns, grouped_df.columns):
+                gb.configure_column(col, headerName=display_name)
+
+
+            gb.configure_selection('single', use_checkbox=True)
             grid_options = gb.build()
         
             # Display the dataframe using AgGrid
