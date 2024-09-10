@@ -27,8 +27,16 @@ import api_scraper
 # Initialize the scraper object
 scraper = api_scraper.MLB_Scrape()
 
+
+sport_id_dict = {'MLB':1,
+                 'AAA':11}
+
+
+selected_league = st.selectbox('Select League', list(sport_id_dict.keys()))
+selected_sport_id = sport_id_dict[selected_league]
+
 # Get player data and filter for pitchers
-df_player = scraper.get_players(sport_id=1)
+df_player = scraper.get_players(sport_id=selected_sport_id)
 df_player = df_player.filter(pl.col('position').str.contains('P'))
 df_player = df_player.with_columns(
     (pl.concat_str(["name", "player_id"], separator=" - ").alias("pitcher_name_id"))
@@ -105,7 +113,8 @@ season = str(start_date)[0:4]
 
 # Get list of games for the selected player and date range
 player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
-                                             start_date=str(start_date), end_date=str(end_date))
+                                             start_date=str(start_date), end_date=str(end_date),
+                                            sport_id=selected_sport_id)
 
 # Function to fetch data and cache it
 @st.cache_data
