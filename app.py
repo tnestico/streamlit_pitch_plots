@@ -271,7 +271,7 @@ st.markdown("""
 - **`Short Form Movement`**: Illustrates the movement of the pitch due to spin, where (0,0) indicates a pitch with perfect gyro-spin (e.g. Like a Football).
 - **`Long Form Movement`**: Illustrates the movement of the pitch due to spin and gravity.
 - **`Release Points`**: Illustrates a pitchers release points from the catcher's perspective.
-"""
+
 
 #### Acknowledgements
 
@@ -280,6 +280,6 @@ Big thanks to [Michael Rosen](https://twitter.com/bymichaelrosen) and [Jeremy Ma
 [Check Out Michael's Pitch Plotting App Here](https://pitchplotgenerator.streamlit.app/).
 
 [Check Out Jeremy's Website *Pitch Profiler*](http://www.mlbpitchprofiler.com/).
-   
+"""
 )
 
