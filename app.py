@@ -173,16 +173,17 @@ if st.button('Generate Plot'):
 
 
             st.write("#### Pitching Data")
+            column_config_dict = {
+                'pitcher_id': 'Pitcher ID',
+                'pitch_description': 'Pitch Type',
+                'pitches': 'Pitches',
+                'start_speed': 'Velocity (mph)',
+                'ivb': 'iVB (in)',
+                'hb': 'HB (in)',
+                'spin_rate': 'Spin Rate (rpm)',
+                'proportion': st.column_config.NumberColumn("Pitch%", format="%.1f%%")
+            }
 
-            column_config_dict = {'pitcher_id':'Pitcher ID',
-                                  'pitch_description':'Pitch Type',
-                                  'pitches':'Pitches',
-                                  'start_speed':'Velocity (mph)',
-                                  'ivb':'iVB (in)',
-                                  'hb':'HB (in)',
-                                  'spin_rate':'Spin Rate (rpm)',
-                                  'proportion':st.column_config.NumberColumn("Pitch%", format="%.1f%%")}
-                
                 
             #st.column_config.NumberColumn("Dollar values”, format=”$ %d")}
 
