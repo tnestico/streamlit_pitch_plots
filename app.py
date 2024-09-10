@@ -51,28 +51,30 @@ scraper = api_scraper.MLB_Scrape()
 sport_id_dict = {'MLB':1,
                  'AAA':11}
 
+col_1, col_2 = st.columns(2)
+with col_1:
+  selected_league = st.selectbox('#### Select League', list(sport_id_dict.keys()))
+  selected_sport_id = sport_id_dict[selected_league]
 
-selected_league = st.selectbox('#### Select League', list(sport_id_dict.keys()))
-selected_sport_id = sport_id_dict[selected_league]
-
-# Get player data and filter for pitchers
-df_player = scraper.get_players(sport_id=selected_sport_id)
-df_player = df_player.filter(pl.col('position').str.contains('P'))
-df_player = df_player.with_columns(
-    (pl.concat_str(["name", "player_id"], separator=" - ").alias("pitcher_name_id"))
-)
-
-# Select specific columns and convert to dictionary
-pitcher_name_id_dict = dict(df_player.select(['pitcher_name_id', 'player_id']).iter_rows())
-
-# Initialize session state for previous selection
-if 'prev_pitcher_id' not in st.session_state:
-    st.session_state.prev_pitcher_id = None
-
-# Display a selectbox for pitcher selection
-st.write("#### Select Pitcher")
-selected_pitcher = st.selectbox('', list(pitcher_name_id_dict.keys()))
-pitcher_id = pitcher_name_id_dict[selected_pitcher]
+with col_2:
+  # Get player data and filter for pitchers
+  df_player = scraper.get_players(sport_id=selected_sport_id)
+  df_player = df_player.filter(pl.col('position').str.contains('P'))
+  df_player = df_player.with_columns(
+      (pl.concat_str(["name", "player_id"], separator=" - ").alias("pitcher_name_id"))
+  )
+  
+  # Select specific columns and convert to dictionary
+  pitcher_name_id_dict = dict(df_player.select(['pitcher_name_id', 'player_id']).iter_rows())
+  
+  # Initialize session state for previous selection
+  if 'prev_pitcher_id' not in st.session_state:
+      st.session_state.prev_pitcher_id = None
+  
+  # Display a selectbox for pitcher selection
+  st.write("#### Select Pitcher")
+  selected_pitcher = st.selectbox('', list(pitcher_name_id_dict.keys()))
+  pitcher_id = pitcher_name_id_dict[selected_pitcher]
 
 # Clear cache if selection changes
 if pitcher_id != st.session_state.prev_pitcher_id:
