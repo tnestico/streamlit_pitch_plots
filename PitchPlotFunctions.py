@@ -224,10 +224,10 @@ class PitchPlotFunctions:
         data = requests.get(url).json()
 
         # # # Construct the URL to fetch team data
-        # url_team = 'https://statsapi.mlb.com/' + data['people'][0]['currentTeam']['link']
+        url_team = 'https://statsapi.mlb.com/' + data['people'][0]['currentTeam']['link']
 
         # # # Send a GET request to the team URL and parse the JSON response
-        # data_team = requests.get(url_team).json()
+        data_team = requests.get(url_team).json()
         
         # Get the logo URL from the image dictionary using the team abbreviation
         try:
