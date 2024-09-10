@@ -317,7 +317,7 @@ class PitchPlotFunctions:
 
 
     ### BREAK PLOT ###
-    def break_plot_big(self,df: pl.DataFrame, ax: plt.Axes):
+    def break_plot_big(self,df: pl.DataFrame, ax: plt.Axes, sport_id: int):
 
             font_properties = {'size': 20}
             font_properties_titles = {'size': 32}
@@ -414,7 +414,7 @@ class PitchPlotFunctions:
             ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: int(x)))  
 
     ### BREAK PLOT ###
-    def break_plot_big_long(self,df: pl.DataFrame, ax: plt.Axes):
+    def break_plot_big_long(self,df: pl.DataFrame, ax: plt.Axes, sport_id: int):
 
             font_properties = {'size': 20}
             font_properties_titles = {'size': 32}
