@@ -165,7 +165,7 @@ if st.button('Generate Plot'):
                     pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
                     pl.col('ivb').drop_nans().mean().round(1).alias('ivb'),
                     pl.col('hb').drop_nans().mean().round(1).alias('hb'),
-                    pl.col('spin_rate').drop_nans().mean().round(-1).alias('spin_rate'),
+                    pl.col('spin_rate').drop_nans().mean().round(0).alias('spin_rate'),
                     pl.col('x0').drop_nans().mean().round(1).alias('x0'),
                     pl.col('z0').drop_nans().mean().round(1).alias('z0'),
                 ])
