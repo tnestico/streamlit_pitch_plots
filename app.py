@@ -214,6 +214,13 @@ if st.button('Generate Plot'):
                 'z0': 'vRel',
             }
 
+            
+            st.markdown(f"""{selected_pitcher.split('-')[0]} Pitch Data
+            
+
+            """
+                       
+                       )
             st.dataframe(grouped_df,
                          hide_index=True,
                          column_config=column_config_dict,
