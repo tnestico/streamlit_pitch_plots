@@ -162,39 +162,39 @@ class PitchPlotFunctions:
         # Construct the URL for the player's headshot image
         if sport_id == 1:
             url = f'https://img.mlbstatic.com/mlb-photos/image/'\
-                f'upload/d_people:generic:headshot:67:current.png'\
-                f'/w_640,q_auto:best/v1/people/{pitcher_id}/headshot/silo/current.png'
-                 # Send a GET request to the URL
-                response = requests.get(url)
-        
-                # Open the image from the response content
-                img = Image.open(BytesIO(response.content))
-        
-        
-                # Display the image on the axis
-                ax.set_xlim(0, 2)
-                ax.set_ylim(0, 1)
-                ax.imshow(img, extent=[0.0, 1, 0, 1], origin='upper')
-        
-                # Turn off the axis
-                ax.axis('off')
+            f'upload/d_people:generic:headshot:67:current.png'\
+            f'/w_640,q_auto:best/v1/people/{pitcher_id}/headshot/silo/current.png'
+             # Send a GET request to the URL
+            response = requests.get(url)
+    
+            # Open the image from the response content
+            img = Image.open(BytesIO(response.content))
+    
+    
+            # Display the image on the axis
+            ax.set_xlim(0, 2)
+            ax.set_ylim(0, 1)
+            ax.imshow(img, extent=[0.0, 1, 0, 1], origin='upper')
+    
+            # Turn off the axis
+            ax.axis('off')
 
         else:
-                url = f'https://img.mlbstatic.com/mlb-photos/image/upload/c_fill,g_auto/w_640/v1/people/{pitcher_id}/headshot/milb/current.png'
-                # Send a GET request to the URL
-                response = requests.get(url)
-        
-                # Open the image from the response content
-                img = Image.open(BytesIO(response.content))
-        
-        
-                # Display the image on the axis
-                ax.set_xlim(0, 2)
-                ax.set_ylim(0, 1)
-                ax.imshow(img, extent=[0.0, 180/270, 0, 1], origin='upper')
-        
-                # Turn off the axis
-                ax.axis('off')
+            url = f'https://img.mlbstatic.com/mlb-photos/image/upload/c_fill,g_auto/w_640/v1/people/{pitcher_id}/headshot/milb/current.png'
+            # Send a GET request to the URL
+            response = requests.get(url)
+    
+            # Open the image from the response content
+            img = Image.open(BytesIO(response.content))
+    
+    
+            # Display the image on the axis
+            ax.set_xlim(0, 2)
+            ax.set_ylim(0, 1)
+            ax.imshow(img, extent=[0.0, 180/270, 0, 1], origin='upper')
+    
+            # Turn off the axis
+            ax.axis('off')
 
 
     def player_bio(self,pitcher_id: str, ax: plt.Axes,start_date: str,end_date: str, batter_hand: list):
