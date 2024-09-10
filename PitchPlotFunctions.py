@@ -223,17 +223,15 @@ class PitchPlotFunctions:
         # Send a GET request to the URL and parse the JSON response
         data = requests.get(url).json()
 
-        # Construct the URL to fetch team data
-        url_team = 'https://statsapi.mlb.com/' + data['people'][0]['currentTeam']['link']
+        # # Construct the URL to fetch team data
+        # url_team = 'https://statsapi.mlb.com/' + data['people'][0]['currentTeam']['link']
 
-        # Send a GET request to the team URL and parse the JSON response
-        data_team = requests.get(url_team).json()
-        print('WE MADE IT HERE',data_team['teams'][0]['parentOrgId'])
-        print(dict(scraper.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows()))
-
+        # # Send a GET request to the team URL and parse the JSON response
+        # data_team = requests.get(url_team).json()
+        
         # Get the logo URL from the image dictionary using the team abbreviation
         # try:
-        team_id = data_team['teams'][0]['parentOrgId']
+        team_id = data['teams'][0]['parentOrgId']
 
         logo_url = self.team_logos()[dict(scraper.get_teams().select(['team_id', 'parent_org_abbreviation']).iter_rows())[team_id]]
 
