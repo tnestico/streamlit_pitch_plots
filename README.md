@@ -19,7 +19,7 @@ This application is a data visualization tool that fetches MLB and AAA pitching 
 - Requests
 - st_aggrid
 
-api_scraper.py can be found ain this [Repository](https://github.com/tnestico/mlb_scraper)
+api_scraper.py can be found in this [Repository](https://github.com/tnestico/mlb_scraper)
 
 ## Installation
 
