@@ -5,28 +5,11 @@ import PitchPlotFunctions as ppf
 import requests
 import polars as pl
 from datetime import date
-
-# Initialize the plotter object from PitchPlotFunctions
-ploter = ppf.PitchPlotFunctions()
-
-# # URL of the file to download (raw content)
-# file_url = "https://raw.githubusercontent.com/tnestico/mlb_scraper/main/api_scraper.py"
-# local_file_path = "api_scraper.py"
-
-# # Download the file from GitHub
-# response = requests.get(file_url)
-# if response.status_code == 200:
-#     with open(local_file_path, 'wb') as file:
-#         file.write(response.content)
-# else:
-#     print(f"Failed to download file: {response.status_code}")
-
-# Import the downloaded scraper module
 import api_scraper
 
 
 
-
+# Display the app title and description
 st.markdown("""
 ## MLB & AAA Pitch Plots App
 
@@ -44,37 +27,39 @@ It can also display data for games currently in progress.
 """
 )
 
-
+# Initialize the plotter object from PitchPlotFunctions
+ploter = ppf.PitchPlotFunctions()
 # Initialize the scraper object
 scraper = api_scraper.MLB_Scrape()
 
+# Dictionary mapping league names to sport IDs
+sport_id_dict = {'MLB': 1, 'AAA': 11}
 
-sport_id_dict = {'MLB':1,
-                 'AAA':11}
-
+# Create two columns for league and pitcher selection
 col_1, col_2 = st.columns(2)
 with col_1:
-  selected_league = st.selectbox('##### Select League', list(sport_id_dict.keys()))
-  selected_sport_id = sport_id_dict[selected_league]
+    # Select league
+    selected_league = st.selectbox('##### Select League', list(sport_id_dict.keys()))
+    selected_sport_id = sport_id_dict[selected_league]
 
 with col_2:
-  # Get player data and filter for pitchers
-  df_player = scraper.get_players(sport_id=selected_sport_id)
-  df_player = df_player.filter(pl.col('position').str.contains('P'))
-  df_player = df_player.with_columns(
-      (pl.concat_str(["name", "player_id"], separator=" - ").alias("pitcher_name_id"))
-  )
-  
-  # Select specific columns and convert to dictionary
-  pitcher_name_id_dict = dict(df_player.select(['pitcher_name_id', 'player_id']).iter_rows())
-  
-  # Initialize session state for previous selection
-  if 'prev_pitcher_id' not in st.session_state:
-      st.session_state.prev_pitcher_id = None
-  
-  # Display a selectbox for pitcher selection
-  selected_pitcher = st.selectbox("##### Select Pitcher",list(pitcher_name_id_dict.keys()))
-  pitcher_id = pitcher_name_id_dict[selected_pitcher]
+    # Get player data and filter for pitchers
+    df_player = scraper.get_players(sport_id=selected_sport_id)
+    df_player = df_player.filter(pl.col('position').str.contains('P'))
+    df_player = df_player.with_columns(
+        (pl.concat_str(["name", "player_id"], separator=" - ").alias("pitcher_name_id"))
+    )
+    
+    # Select specific columns and convert to dictionary
+    pitcher_name_id_dict = dict(df_player.select(['pitcher_name_id', 'player_id']).iter_rows())
+    
+    # Initialize session state for previous selection
+    if 'prev_pitcher_id' not in st.session_state:
+        st.session_state.prev_pitcher_id = None
+    
+    # Display a selectbox for pitcher selection
+    selected_pitcher = st.selectbox("##### Select Pitcher", list(pitcher_name_id_dict.keys()))
+    pitcher_id = pitcher_name_id_dict[selected_pitcher]
 
 # Clear cache if selection changes
 if pitcher_id != st.session_state.prev_pitcher_id:
@@ -138,7 +123,7 @@ season = str(start_date)[0:4]
 # Get list of games for the selected player and date range
 player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
                                              start_date=str(start_date), end_date=str(end_date),
-                                            sport_id=selected_sport_id)
+                                             sport_id=selected_sport_id)
 
 # Function to fetch data and cache it
 @st.cache_data
@@ -159,99 +144,82 @@ if st.button('Generate Plot'):
     try:
         # Convert dataframe to polars and filter based on inputs
         df = ploter.df_to_polars(df_original=df_original,
-                             pitcher_id=pitcher_id,
-                             start_date=str(start_date),
-                             end_date=str(end_date),
-                             batter_hand=batter_hand,
-                             )
+                                 pitcher_id=pitcher_id,
+                                 start_date=str(start_date),
+                                 end_date=str(end_date),
+                                 batter_hand=batter_hand)
         print(df)
         if len(df) == 0:
             st.write('Please select different parameters.')
-            
-            
         else:
-        # Generate the final plot
+            # Generate the final plot
             ploter.final_plot(
-             df=df,
-             pitcher_id=pitcher_id,
-             plot_picker=plot_picker,
-             sport_id = selected_sport_id)
-          
-          # Use a container to control the width of the AgGrid display
-        with st.container():
-
-
-                        # Group the data by pitch type
-            grouped_df = (
-                df.group_by(['pitcher_id','pitch_description'])
-                .agg([
-                    pl.col('is_pitch').drop_nans().count().alias('pitches'),
-                    pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
-                    pl.col('vb').drop_nans().mean().round(1).alias('vb'),
-                    pl.col('ivb').drop_nans().mean().round(1).alias('ivb'),
-                    pl.col('hb').drop_nans().mean().round(1).alias('hb'),
-                    pl.col('spin_rate').drop_nans().mean().round(0).alias('spin_rate'),
-                    pl.col('x0').drop_nans().mean().round(1).alias('x0'),
-                    pl.col('z0').drop_nans().mean().round(1).alias('z0'),
-                ])
-                .with_columns(
-                    (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id') * 100).round(3).alias('proportion')
-                )).sort('proportion', descending=True).select(["pitch_description", "pitches","proportion", "start_speed","vb","ivb","hb",
-                                                              "spin_rate","x0","z0"])
-
-
-            st.write("#### Pitching Data")
-            column_config_dict = {
-                'pitcher_id': 'Pitcher ID',
-                'pitch_description': 'Pitch Type',
-                'pitches': 'Pitches',
-                'start_speed': 'Velocity',
-                'vb': 'VB',
-                'ivb': 'iVB',
-                'hb': 'HB',
-                'spin_rate': 'Spin Rate',
-                'proportion': st.column_config.NumberColumn("Pitch%",  format="%.1f%%"),
-                'x0': 'hRel',
-                'z0': 'vRel',
-            }
-
+                df=df,
+                pitcher_id=pitcher_id,
+                plot_picker=plot_picker,
+                sport_id=selected_sport_id)
             
-            st.markdown(f"""##### {selected_pitcher.split('-')[0]} {selected_league} Pitch Data
-            
+            # Use a container to control the width of the AgGrid display
+            with st.container():
+                # Group the data by pitch type
+                grouped_df = (
+                    df.group_by(['pitcher_id', 'pitch_description'])
+                    .agg([
+                        pl.col('is_pitch').drop_nans().count().alias('pitches'),
+                        pl.col('start_speed').drop_nans().mean().round(1).alias('start_speed'),
+                        pl.col('vb').drop_nans().mean().round(1).alias('vb'),
+                        pl.col('ivb').drop_nans().mean().round(1).alias('ivb'),
+                        pl.col('hb').drop_nans().mean().round(1).alias('hb'),
+                        pl.col('spin_rate').drop_nans().mean().round(0).alias('spin_rate'),
+                        pl.col('x0').drop_nans().mean().round(1).alias('x0'),
+                        pl.col('z0').drop_nans().mean().round(1).alias('z0'),
+                    ])
+                    .with_columns(
+                        (pl.col('pitches') / pl.col('pitches').sum().over('pitcher_id') * 100).round(3).alias('proportion')
+                    )).sort('proportion', descending=True).select(["pitch_description", "pitches", "proportion", "start_speed", "vb", "ivb", "hb",
+                                                                   "spin_rate", "x0", "z0"])
 
-            """
-                       
-                       )
-            st.dataframe(grouped_df,
-                         hide_index=True,
-                         column_config=column_config_dict,
-                         width = 1500
-        
-                         )
+                st.write("#### Pitching Data")
+                column_config_dict = {
+                    'pitcher_id': 'Pitcher ID',
+                    'pitch_description': 'Pitch Type',
+                    'pitches': 'Pitches',
+                    'start_speed': 'Velocity',
+                    'vb': 'VB',
+                    'ivb': 'iVB',
+                    'hb': 'HB',
+                    'spin_rate': 'Spin Rate',
+                    'proportion': st.column_config.NumberColumn("Pitch%", format="%.1f%%"),
+                    'x0': 'hRel',
+                    'z0': 'vRel',
+                }
 
-            # Configure the AgGrid options
-            # Configure the AgGrid options
-            # gb = GridOptionsBuilder.from_dataframe(grouped_df)
-            # # Set display names for columns
-            # for col, display_name in zip(grouped_df.columns, grouped_df.columns):
-            #     gb.configure_column(col, headerName=display_name)
+                st.markdown(f"""##### {selected_pitcher.split('-')[0]} {selected_league} Pitch Data""")
+                st.dataframe(grouped_df,
+                             hide_index=True,
+                             column_config=column_config_dict,
+                             width=1500)
 
+                # Configure the AgGrid options
+                # gb = GridOptionsBuilder.from_dataframe(grouped_df)
+                # # Set display names for columns
+                # for col, display_name in zip(grouped_df.columns, grouped_df.columns):
+                #     gb.configure_column(col, headerName=display_name)
 
-            # grid_options = gb.build()
-        
-            # # Display the dataframe using AgGrid
-            # grid_response = AgGrid(
-            #     grouped_df,
-            #     gridOptions=grid_options,
-            #     height=300,
-            #     allow_unsafe_jscode=True,
-            # )
+                # grid_options = gb.build()
+
+                # # Display the dataframe using AgGrid
+                # grid_response = AgGrid(
+                #     grouped_df,
+                #     gridOptions=grid_options,
+                #     height=300,
+                #     allow_unsafe_jscode=True,
+                # )
 
     except IndexError:
         st.write('Please select different parameters.')
 
-
-
+# Display column and plot descriptions
 st.markdown("""
 #### Column Descriptions
 
@@ -272,7 +240,6 @@ st.markdown("""
 - **`Long Form Movement`**: Illustrates the movement of the pitch due to spin and gravity.
 - **`Release Points`**: Illustrates a pitchers release points from the catcher's perspective.
 
-
 #### Acknowledgements
 
 Big thanks to [Michael Rosen](https://twitter.com/bymichaelrosen) and [Jeremy Maschino](https://twitter.com/pitchprofiler) for inspiration for this project
@@ -282,4 +249,3 @@ Check Out Michael's [**Pitch Plotting App**](https://pitchplotgenerator.streamli
 Check Out Jeremy's Website [**Pitch Profiler**](http://www.mlbpitchprofiler.com/)
 """
 )
-
