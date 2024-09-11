@@ -14,6 +14,7 @@ st.markdown("""
 ## MLB & AAA Pitch Plots App
 
 ##### By: Thomas Nestico ([@TJStats](https://x.com/TJStats))
+##### Code: [GitHub Repo](https://github.com/tnestico/streamlit_pitch_plots)
 ##### Data: [MLB](https://baseballsavant.mlb.com/)
 
 #### About
@@ -36,6 +37,7 @@ scraper = api_scraper.MLB_Scrape()
 sport_id_dict = {'MLB': 1, 'AAA': 11}
 
 # Create two columns for league and pitcher selection
+st.write("#### Plot")
 col_1, col_2 = st.columns(2)
 with col_1:
     # Select league
@@ -113,7 +115,6 @@ plot_picker_dict = {
 }
 
 # Selectbox for plot type
-st.write("##### Plot")
 plot_picker_select = st.selectbox('Select Plot Type:', list(plot_picker_dict.keys()))
 plot_picker = plot_picker_dict[plot_picker_select]
 
