@@ -817,7 +817,7 @@ class MLB_Scrape:
 
         return leagues_df
 
-    def get_player_games_list(self, player_id: int, season: int, start_date: str = None, end_date: str = None, sport_id: int = 1, game_type: list =['R']):
+    def get_player_games_list(self, player_id: int, season: int, start_date: str = None, end_date: str = None, sport_id: int = 1, game_type: list = ['R']):
         """
         Retrieves a list of game IDs for a specific player in a given season.
         
@@ -850,7 +850,7 @@ class MLB_Scrape:
         game_type_str = ','.join([str(x) for x in game_type])
 
         # Make API call to retrieve player game logs
-        response = requests.get(url=f'http://statsapi.mlb.com/api/v1/people/{player_id}?hydrate=stats(type=gameLog,season={season},startDate={start_date},endDate={end_date},sportId={sport_id},gameType={game_type_str}),hydrations').json()
+        response = requests.get(url=f'http://statsapi.mlb.com/api/v1/people/{player_id}?hydrate=stats(type=gameLog,season={season},startDate={start_date},endDate={end_date},sportId={sport_id},gameType=[{game_type_str}]),hydrations').json()
         
         # Extract game IDs from the API response
         player_game_list = [x['game']['gamePk'] for x in response['people'][0]['stats'][0]['splits']]
