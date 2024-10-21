@@ -125,7 +125,7 @@ season = str(start_date)[0:4]
 player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
                                              start_date=str(start_date), end_date=str(end_date),
                                              sport_id=selected_sport_id,
-                                             game_type = ['R'])
+                                             game_type = ['R','P'])
 
 # Function to fetch data and cache it
 @st.cache_data
