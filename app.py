@@ -83,7 +83,7 @@ batter_hand_picker = {
 
 # Define date range for the season
 min_date = date(2024, 3, 20)
-max_date = date(2024, 10, 1)
+max_date = date(2024, 11, 30)
 
 # Create columns for input widgets
 st.write("##### Filters")
@@ -124,7 +124,8 @@ season = str(start_date)[0:4]
 # Get list of games for the selected player and date range
 player_games = scraper.get_player_games_list(player_id=pitcher_id, season=season,
                                              start_date=str(start_date), end_date=str(end_date),
-                                             sport_id=selected_sport_id)
+                                             sport_id=selected_sport_id,
+                                             game_type = ['R','P'])
 
 # Function to fetch data and cache it
 @st.cache_data
